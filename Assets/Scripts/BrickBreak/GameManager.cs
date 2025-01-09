@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace RobbieWagnerGames.BrickBallGame
 {
-    // Start is called before the first frame update
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private Ball gameBallPrefab;
+        [SerializeField] private float ballSpeed = 10f;
+        [SerializeField] private BounceBar player1BounceBar;
+        [SerializeField] private BounceBar player2BounceBar;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private Ball currentBallInstance = null;
+
+        private void Awake()
+        {
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            currentBallInstance = Instantiate(gameBallPrefab);
+            currentBallInstance.transform.position = (Vector2) player1BounceBar.transform.position + Vector2.right * .5f;
+            currentBallInstance.rb2d.velocity = new Vector2(.67f, .33f).normalized * ballSpeed;
+        }
     }
 }

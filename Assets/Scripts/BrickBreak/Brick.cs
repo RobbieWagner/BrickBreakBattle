@@ -1,25 +1,26 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Brick : MonoBehaviour
+namespace RobbieWagnerGames.BrickBallGame
 {
-    [SerializeField] private float brickPointMultiplier = 1;
-    private Coroutine destroyCoroutine = null;
-
-    private void OnCollisionEnter2D(Collision2D other)
+    public class Brick : MonoBehaviour
     {
-        if (other.gameObject.CompareTag("Ball") && destroyCoroutine == null)
-            destroyCoroutine = StartCoroutine(DelayDestroy());
-    }
+        [SerializeField] private float brickPointMultiplier = 1;
+        private Coroutine destroyCoroutine = null;
 
-    private IEnumerator DelayDestroy()
-    {
-        OnBrickDestroyed?.Invoke(brickPointMultiplier);
-        yield return null;
-        Destroy(gameObject);
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Ball") && destroyCoroutine == null)
+                destroyCoroutine = StartCoroutine(DelayDestroy());
+        }
+
+        private IEnumerator DelayDestroy()
+        {
+            OnBrickDestroyed?.Invoke(brickPointMultiplier);
+            yield return null;
+            Destroy(gameObject);
+        }
+        public delegate void OnDestroyBrickDelegate(float pointMultiplier);
+        public event OnDestroyBrickDelegate OnBrickDestroyed;
     }
-    public delegate void OnDestroyBrickDelegate(float pointMultiplier);
-    public event OnDestroyBrickDelegate OnBrickDestroyed;
 }
