@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace RobbieWagnerGames.BrickBallGame
@@ -12,13 +13,23 @@ namespace RobbieWagnerGames.BrickBallGame
 
         private Ball currentBallInstance = null;
 
+        public static GameManager Instance { get; private set; }
+
         private void Awake()
         {
-            StartGame();
+            if (Instance != null && Instance != this)
+                Destroy(gameObject);
+            else
+                Instance = this;
+
+            StartCoroutine(StartGame());
         }
 
-        private void StartGame()
+        private IEnumerator StartGame()
         {
+            yield return null;
+            LevelManager.Instance.StartNewLevel();
+
             currentBallInstance = Instantiate(gameBallPrefab);
             currentBallInstance.transform.position = (Vector2) player1BounceBar.transform.position + Vector2.right * .5f;
             currentBallInstance.rb2d.velocity = new Vector2(.67f, .33f).normalized * ballSpeed;

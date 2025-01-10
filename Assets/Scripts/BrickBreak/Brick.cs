@@ -16,11 +16,11 @@ namespace RobbieWagnerGames.BrickBallGame
 
         private IEnumerator DelayDestroy()
         {
-            OnBrickDestroyed?.Invoke(brickPointMultiplier);
+            OnBrickHit?.Invoke(this, brickPointMultiplier);
             yield return null;
             Destroy(gameObject);
         }
-        public delegate void OnDestroyBrickDelegate(float pointMultiplier);
-        public event OnDestroyBrickDelegate OnBrickDestroyed;
+        public delegate void OnBrickHitDelegate(Brick brick, float pointMultiplier);
+        public event OnBrickHitDelegate OnBrickHit;
     }
 }
